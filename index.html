@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alaa Negm | Senior VFX Compositor | Nuke Artist Egypt</title>
+<meta name="description" content="Alaa Negm is a Senior VFX Compositor based in Cairo, Egypt, specializing in Nuke, Rotoscoping, Paint, and high-end visual effects for film, TV, and advertising.">
+<meta name="keywords" content="VFX Compositor, Nuke Artist, Rotoscoping, Visual Effects Egypt, Compositing Artist, Mocha Pro, After Effects">
+<meta name="author" content="Alaa Negm">
+<meta property="og:title" content="Alaa Negm — VFX Compositor">
+<meta property="og:description" content="Senior VFX Compositor with 5+ years experience in film, TV, and commercials.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://alaanegm.github.io/Alaa-Negm-Portfolio/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#050505;--dark:#0c0c0c;--panel:#111;--border:#1e1e1e;
+  --mid:#2a2a2a;--muted:#555;--subtle:#888;--light:#c8c3b8;
+  --white:#f0ece4;--gold:#c8a96e;--gold-dim:#7a6240;--scan:rgba(200,169,110,.03)
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--black);color:var(--light);
+  font-family:'DM Mono',monospace;font-weight:300;font-size:13px;
+  letter-spacing:.02em;line-height:1.7;cursor:none;overflow-x:hidden
+}
+
+/* CURSOR */
+#cursor{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;
+  pointer-events:none;z-index:9999;transition:transform .15s ease,opacity .2s;
+  transform:translate(-50%,-50%)}
+#cursor-ring{position:fixed;width:32px;height:32px;border:1px solid rgba(200,169,110,.4);
+  border-radius:50%;pointer-events:none;z-index:9998;
+  transition:transform .4s cubic-bezier(.16,1,.3,1),width .3s,height .3s;
+  transform:translate(-50%,-50%)}
+
+/* SCANLINES */
+body::after{content:'';position:fixed;inset:0;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,var(--scan) 2px,var(--scan) 4px);
+  pointer-events:none;z-index:9990;opacity:.6}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:24px 48px;
+  background:linear-gradient(to bottom,rgba(5,5,5,.96) 0%,transparent 100%)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.12em;
+  color:var(--white);text-decoration:none}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:40px;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:11px;letter-spacing:.15em;
+  text-transform:uppercase;transition:color .3s}
+.nav-links a:hover{color:var(--gold)}
+.nav-status{display:flex;align-items:center;gap:8px;font-size:11px;
+  color:var(--muted);letter-spacing:.1em}
+.status-dot{width:6px;height:6px;background:#2ecc71;border-radius:50%;
+  animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* HERO */
+#hero{position:relative;height:100vh;display:flex;flex-direction:column;
+  justify-content:flex-end;padding:0 48px 72px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 70% 40%,rgba(200,169,110,.06) 0%,transparent 60%),
+             radial-gradient(ellipse 50% 80% at 20% 60%,rgba(192,57,43,.04) 0%,transparent 50%);z-index:0}
+.hero-grid-bg{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(30,30,30,.25) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(30,30,30,.25) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%);z-index:0}
+.hero-eyebrow{position:relative;z-index:1;font-size:11px;letter-spacing:.3em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:20px;
+  opacity:0;animation:fadeUp .8s ease .3s forwards}
+.hero-name{position:relative;z-index:1;font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(80px,13vw,180px);line-height:.9;letter-spacing:.03em;color:var(--white);
+  opacity:0;animation:fadeUp .8s ease .5s forwards}
+.hero-name .dim{color:var(--mid)}
+.hero-tagline{position:relative;z-index:1;font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-size:clamp(18px,2.5vw,26px);color:var(--subtle);margin-top:16px;
+  opacity:0;animation:fadeUp .8s ease .7s forwards}
+.hero-meta{position:relative;z-index:1;display:flex;gap:48px;margin-top:48px;
+  opacity:0;animation:fadeUp .8s ease .9s forwards}
+.hero-stat{border-left:1px solid var(--gold-dim);padding-left:16px}
+.hero-stat-num{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--white);
+  letter-spacing:.05em;line-height:1}
+.hero-stat-label{font-size:10px;letter-spacing:.2em;color:var(--muted);
+  text-transform:uppercase;margin-top:4px}
+.hero-scroll{position:absolute;bottom:40px;right:48px;z-index:1;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  opacity:0;animation:fadeIn 1s ease 1.5s forwards}
+.hero-scroll span{font-size:10px;letter-spacing:.2em;color:var(--muted);writing-mode:vertical-rl}
+.scroll-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--gold),transparent);
+  animation:scrollLine 2s ease infinite}
+@keyframes scrollLine{
+  0%{transform:scaleY(0);transform-origin:top;opacity:1}
+  50%{transform:scaleY(1);transform-origin:top;opacity:1}
+  51%{transform:scaleY(1);transform-origin:bottom;opacity:1}
+  100%{transform:scaleY(0);transform-origin:bottom;opacity:0}
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* TICKER */
+.ticker-wrap{overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  background:var(--panel);padding:12px 0}
+.ticker{display:flex;gap:80px;white-space:nowrap;animation:ticker 28s linear infinite;width:max-content}
+.ticker span{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:.15em;color:var(--border)}
+.ticker span.accent{color:var(--gold-dim)}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SECTIONS */
+section{padding:120px 48px;position:relative}
+.section-label{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);
+  margin-bottom:16px;display:flex;align-items:center;gap:12px}
+.section-label::before{content:'';display:inline-block;width:32px;height:1px;background:var(--gold)}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,64px);
+  font-weight:300;line-height:1.1;color:var(--white);margin-bottom:64px}
+.section-title em{font-style:italic;color:var(--gold)}
+
+/* ABOUT */
+#about{max-width:1400px;margin:0 auto;border-top:1px solid var(--border)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.about-text p{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;
+  color:var(--light);line-height:1.8;margin-bottom:24px}
+.about-text p:first-child::first-letter{font-size:48px;font-weight:600;float:left;
+  line-height:.8;padding-right:8px;color:var(--gold);padding-top:6px}
+.about-specs{border:1px solid var(--border);padding:40px;background:var(--panel)}
+.spec-row{display:flex;justify-content:space-between;align-items:baseline;
+  padding:14px 0;border-bottom:1px solid var(--border);font-size:12px;gap:16px}
+.spec-row:last-child{border-bottom:none}
+.spec-key{color:var(--muted);letter-spacing:.1em;text-transform:uppercase;font-size:10px;flex-shrink:0}
+.spec-val{color:var(--white);text-align:right}
+
+/* SKILLS */
+#skills{background:var(--panel);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.skills-inner{max-width:1400px;margin:0 auto}
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border)}
+.skill-card{background:var(--panel);padding:40px;position:relative;overflow:hidden;transition:background .3s}
+.skill-card:hover{background:var(--dark)}
+.skill-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);
+  transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+.skill-card:hover::before{transform:scaleX(1)}
+.skill-icon{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--border);
+  position:absolute;top:24px;right:24px;line-height:1;pointer-events:none;transition:color .3s}
+.skill-card:hover .skill-icon{color:var(--mid)}
+.skill-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;
+  color:var(--white);margin-bottom:12px}
+.skill-desc{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:24px}
+.skill-bar-wrap{height:2px;background:var(--border);position:relative;overflow:hidden}
+.skill-bar{height:100%;background:linear-gradient(to right,var(--gold-dim),var(--gold));
+  transform:scaleX(0);transform-origin:left;transition:transform 1.2s cubic-bezier(.16,1,.3,1)}
+.skill-level{font-size:10px;color:var(--gold);letter-spacing:.2em;margin-top:8px}
+
+/* EXPERIENCE */
+#experience{max-width:1400px;margin:0 auto;border-top:1px solid var(--border)}
+.timeline{position:relative;padding-left:48px}
+.timeline::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:1px;
+  background:linear-gradient(to bottom,var(--gold),transparent)}
+.timeline-item{position:relative;padding-bottom:56px;opacity:0;transform:translateX(-20px);
+  transition:opacity .6s ease,transform .6s ease}
+.timeline-item.visible{opacity:1;transform:translateX(0)}
+.timeline-dot{position:absolute;left:-52px;top:6px;width:8px;height:8px;
+  border:1px solid var(--gold);border-radius:50%;background:var(--black)}
+.timeline-dot.current{background:var(--gold);box-shadow:0 0 12px var(--gold)}
+.timeline-date{font-size:11px;letter-spacing:.15em;color:var(--gold);margin-bottom:6px}
+.timeline-role{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;
+  color:var(--white);line-height:1.2;margin-bottom:4px}
+.timeline-company{font-size:12px;color:var(--muted);letter-spacing:.1em;
+  text-transform:uppercase;margin-bottom:16px}
+.timeline-desc{font-size:13px;color:var(--muted);line-height:1.8;max-width:600px}
+.timeline-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.tag{font-size:10px;letter-spacing:.1em;color:var(--gold-dim);border:1px solid var(--gold-dim);
+  padding:3px 10px;text-transform:uppercase}
+
+/* SHOWREEL */
+#showreel{background:var(--dark);border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center}
+.showreel-inner{max-width:1100px;margin:0 auto}
+.reel-frame{position:relative;border:1px solid var(--border);overflow:hidden;
+  margin-bottom:32px;background:var(--black);aspect-ratio:16/9}
+.reel-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
+/* corner brackets */
+.reel-frame::before{content:'';position:absolute;top:0;left:0;width:28px;height:28px;
+  border-top:1px solid var(--gold);border-left:1px solid var(--gold);z-index:2;pointer-events:none}
+.reel-frame::after{content:'';position:absolute;bottom:0;right:0;width:28px;height:28px;
+  border-bottom:1px solid var(--gold);border-right:1px solid var(--gold);z-index:2;pointer-events:none}
+
+/* PRODUCTIONS */
+#productions{max-width:1400px;margin:0 auto;border-top:1px solid var(--border)}
+.credits-table{width:100%;border-collapse:collapse}
+.credits-table th{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+  text-align:left;padding:12px 0;border-bottom:1px solid var(--border);font-weight:400}
+.credits-table td{padding:20px 0;border-bottom:1px solid var(--border);font-size:13px;vertical-align:top}
+.credits-table tr{transition:all .2s}
+.credits-table tr:hover td{color:var(--white)}
+.prod-title{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--light);font-weight:400}
+.prod-role{color:var(--muted)}.prod-year{color:var(--muted);font-size:12px}
+.prod-studio{color:var(--subtle);font-size:12px}
+.prod-type{display:inline-block;font-size:9px;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--gold);border:1px solid var(--gold-dim);padding:2px 8px}
+
+/* CONTACT */
+#contact{text-align:center;border-top:1px solid var(--border);padding:120px 48px 160px;position:relative;overflow:hidden}
+.contact-bg{position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 60% at 50% 100%,rgba(200,169,110,.06) 0%,transparent 70%);pointer-events:none}
+.contact-tagline{font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(20px,3vw,32px);color:var(--subtle);margin-bottom:16px}
+.contact-cta{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,96px);
+  letter-spacing:.05em;color:var(--white);margin-bottom:56px;line-height:1}
+.contact-links{display:flex;justify-content:center;gap:24px;flex-wrap:wrap}
+.contact-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 32px;
+  font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;
+  text-decoration:none;cursor:none;transition:all .3s}
+.contact-btn.primary{background:var(--gold);color:var(--black)}
+.contact-btn.primary:hover{background:var(--white)}
+.contact-btn.secondary{border:1px solid var(--border);color:var(--muted)}
+.contact-btn.secondary:hover{border-color:var(--gold);color:var(--gold)}
+
+/* FOOTER */
+footer{padding:32px 48px;border-top:1px solid var(--border);display:flex;
+  justify-content:space-between;align-items:center;font-size:10px;color:var(--muted);letter-spacing:.1em}
+footer a{color:var(--muted);text-decoration:none;transition:color .3s}
+footer a:hover{color:var(--gold)}
+
+/* NOISE */
+.noise{position:fixed;inset:0;z-index:9989;pointer-events:none;opacity:.015;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px}
+
+@media(max-width:900px){
+  nav{padding:20px 24px}.nav-links{display:none}
+  section{padding:72px 24px}#hero{padding:0 24px 56px}
+  .about-grid{grid-template-columns:1fr;gap:40px}
+  .skills-grid{grid-template-columns:1fr}
+  .hero-meta{gap:20px;flex-wrap:wrap}
+  footer{flex-direction:column;gap:16px;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<div class="noise"></div>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#hero">ALAA<span>.</span>NEGM</a>
+  <ul class="nav-links">
+    <li><a href="#showreel">Showreel</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#productions">Credits</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-status">
+    <div class="status-dot"></div>
+    Available for Work
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-bg"></div>
+  <div class="hero-eyebrow">Senior VFX Compositor &nbsp;·&nbsp; Nuke &nbsp;·&nbsp; Mocha Pro &nbsp;·&nbsp; Cairo, Egypt</div>
+  <div class="hero-name">
+    <div class="dim">ALAA</div>
+    <div>NEGM</div>
+  </div>
+  <div class="hero-tagline">Compositing the invisible — making it undeniable.</div>
+  <div class="hero-meta">
+    <div class="hero-stat">
+      <div class="hero-stat-num"><span class="count-up" data-target="5">0</span>+</div>
+      <div class="hero-stat-label">Years in VFX</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num"><span class="count-up" data-target="60">0</span>+</div>
+      <div class="hero-stat-label">Productions</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num"><span class="count-up" data-target="500">0</span>+</div>
+      <div class="hero-stat-label">VFX Shots</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">4</div>
+      <div class="hero-stat-label">Studios</div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- SHOWREEL HERO -->
+<section id="showreel" style="padding:0;background:var(--dark);border-bottom:1px solid var(--border)">
+  <div style="max-width:1100px;margin:0 auto;padding:80px 48px">
+    <div class="section-label">Showreel 2026</div>
+    <div style="padding:56.25% 0 0 0;position:relative;border:1px solid var(--border)">
+      <iframe src="https://player.vimeo.com/video/1185664539?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Alaa Negm — VFX Compositor Showreel 2026"></iframe>
+    </div>
+    <script src="https://player.vimeo.com/api/player.js"></script>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span>NUKE</span><span class="accent">✦</span>
+    <span>MOCHA PRO</span><span class="accent">✦</span>
+    <span>AFTER EFFECTS</span><span class="accent">✦</span>
+    <span>PHOTOSHOP</span><span class="accent">✦</span>
+    <span>MAYA</span><span class="accent">✦</span>
+    <span>ROTOSCOPING</span><span class="accent">✦</span>
+    <span>TRACKING</span><span class="accent">✦</span>
+    <span>KEYING</span><span class="accent">✦</span>
+    <span>PAINT &amp; CLEANUP</span><span class="accent">✦</span>
+    <span>CG INTEGRATION</span><span class="accent">✦</span>
+    <span>NUKE</span><span class="accent">✦</span>
+    <span>MOCHA PRO</span><span class="accent">✦</span>
+    <span>AFTER EFFECTS</span><span class="accent">✦</span>
+    <span>PHOTOSHOP</span><span class="accent">✦</span>
+    <span>MAYA</span><span class="accent">✦</span>
+    <span>ROTOSCOPING</span><span class="accent">✦</span>
+    <span>TRACKING</span><span class="accent">✦</span>
+    <span>KEYING</span><span class="accent">✦</span>
+    <span>PAINT &amp; CLEANUP</span><span class="accent">✦</span>
+    <span>CG INTEGRATION</span><span class="accent">✦</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">Profile</div>
+  <h2 class="section-title">The Craft of <em>Invisible</em> Work</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>Enthusiastic VFX Compositor with a sharp eye for detail and a clear command of rotoscoping, paint, and node-based compositing. Built on a foundation in fine arts and a professional VFX diploma from ITI, with 5+ years of hands-on production experience across Egypt's leading post-production facilities.</p>
+      <p>Proven across 60+ productions and 500+ VFX shots — from drama series and feature films to advertising campaigns. Motivated to grow, collaborate, and deliver technically rigorous, artistically refined work at the highest level.</p>
+    </div>
+    <div class="about-specs">
+      <div class="spec-row">
+        <span class="spec-key">Primary Tools</span>
+        <span class="spec-val">Nuke · After Effects · Mocha Pro</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-key">3D / Render</span>
+        <span class="spec-val">Maya · 3ds Max · V-Ray · Corona</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-key">Specialisation</span>
+        <span class="spec-val">Roto · Paint · Tracking · Compositing</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-key">Base</span>
+        <span class="spec-val">Cairo, Egypt</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-key">Education</span>
+        <span class="spec-val">VFX Diploma — ITI, Giza (2021)<br>B.A. Fine Arts — Alexandria Univ. (2017)</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-key">Languages</span>
+        <span class="spec-val">Arabic (Native) · English (Advanced)</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-key">Availability</span>
+        <span class="spec-val" style="color:#2ecc71">Open — Contract &amp; Permanent</span>
+      </div>
+      <div class="spec-row">
+        <span class="spec-key">IMDb</span>
+        <span class="spec-val">
+          <a href="https://www.imdb.com/name/nm13441994/" target="_blank"
+             style="color:var(--gold);text-decoration:none">nm13441994 ↗</a>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="skills-inner">
+    <div class="section-label">Expertise</div>
+    <h2 class="section-title">Core <em>Disciplines</em></h2>
+    <div class="skills-grid">
+
+      <div class="skill-card">
+        <div class="skill-icon">01</div>
+        <div class="skill-name">Node-Based Compositing</div>
+        <div class="skill-desc">Advanced Nuke workflows for multi-layer composites, deep compositing, and complex shot builds. Clean, organised node graphs built for speed and team collaboration.</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-width="0.95"></div></div>
+        <div class="skill-level">EXPERT — NUKE</div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">02</div>
+        <div class="skill-name">Rotoscoping &amp; Paint</div>
+        <div class="skill-desc">Frame-accurate roto and paint work using Nuke and Silhouette. Precise matte delivery for complex hair, motion blur, and fine detail at any resolution.</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-width="0.97"></div></div>
+        <div class="skill-level">EXPERT</div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">03</div>
+        <div class="skill-name">Mocha Pro Tracking</div>
+        <div class="skill-desc">Planar tracking and object removal using Mocha Pro. Solving difficult track data for screen replacements, clean plates, and stabilisation on challenging live-action footage.</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-width="0.93"></div></div>
+        <div class="skill-level">ADVANCED — MOCHA PRO</div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">04</div>
+        <div class="skill-name">After Effects</div>
+        <div class="skill-desc">Motion graphics, compositing, and effects work in After Effects for broadcast and advertising deliverables. Integrated with Premiere for full post-production pipelines.</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-width="0.90"></div></div>
+        <div class="skill-level">ADVANCED — AE</div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">05</div>
+        <div class="skill-name">CG Integration &amp; Keying</div>
+        <div class="skill-desc">Lighting match, colour science, and compositing of 3D renders into live-action photography. Precision chroma and luma keying across demanding production formats.</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-width="0.88"></div></div>
+        <div class="skill-level">ADVANCED</div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">06</div>
+        <div class="skill-name">3D &amp; Rendering</div>
+        <div class="skill-desc">Working knowledge of Maya and 3ds Max with V-Ray and Corona renderers — enabling deeper collaboration with 3D departments and better-informed compositing decisions.</div>
+        <div class="skill-bar-wrap"><div class="skill-bar" data-width="0.78"></div></div>
+        <div class="skill-level">PROFICIENT — MAYA · 3DS MAX</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">Work History</div>
+  <h2 class="section-title">Career <em>Timeline</em></h2>
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-dot current"></div>
+      <div class="timeline-date">Feb 2024 — Present</div>
+      <div class="timeline-role">Senior VFX Compositing Artist</div>
+      <div class="timeline-company">Gemini Studio · Cairo, Egypt</div>
+      <div class="timeline-desc">Lead compositor on advertising, branded content, and drama productions. Responsible for shot delivery, quality oversight, and complex compositing challenges across the studio's full production slate.</div>
+      <div class="timeline-tags">
+        <span class="tag">Nuke</span><span class="tag">Lead</span><span class="tag">Advertising</span><span class="tag">Drama</span>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">Nov 2023 — Jan 2024</div>
+      <div class="timeline-role">VFX Compositing Artist</div>
+      <div class="timeline-company">The Crew · Cairo, Egypt</div>
+      <div class="timeline-desc">Compositing artist on broadcast and post-production projects. Delivered high-volume shot work with precision across tight broadcast deadlines.</div>
+      <div class="timeline-tags">
+        <span class="tag">Nuke</span><span class="tag">Broadcast</span><span class="tag">Post-Production</span>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">Nov 2022 — Oct 2023</div>
+      <div class="timeline-role">VFX Compositing Artist</div>
+      <div class="timeline-company">Mercury Visual Solution · Cairo, Egypt</div>
+      <div class="timeline-desc">Compositing across drama series and film productions, including Resalet El Imam. Developed expertise in complex roto, paint, CG integration, and motion tracking workflows.</div>
+      <div class="timeline-tags">
+        <span class="tag">Nuke</span><span class="tag">Roto</span><span class="tag">Paint</span><span class="tag">Film</span>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">Sep 2021 — Oct 2022</div>
+      <div class="timeline-role">VFX Compositing Artist</div>
+      <div class="timeline-company">Trend VFX · Cairo, Egypt</div>
+      <div class="timeline-desc">First industry role following ITI diploma. Built production compositing skills across a wide range of shot types — keying, tracking, paint, and CG integration — including work on feature film I.S.S.</div>
+      <div class="timeline-tags">
+        <span class="tag">After Effects</span><span class="tag">Nuke</span><span class="tag">Mocha Pro</span><span class="tag">Entry-Level</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PRODUCTIONS -->
+<section id="productions">
+  <div class="section-label">Selected Credits</div>
+  <h2 class="section-title">Production <em>History</em></h2>
+  <table class="credits-table">
+    <thead>
+      <tr>
+        <th style="width:36%">Production</th>
+        <th style="width:22%">Role</th>
+        <th style="width:18%">Studio</th>
+        <th style="width:10%">Year</th>
+        <th style="width:14%">Format</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><div class="prod-title">I.S.S.</div></td>
+        <td class="prod-role">Compositor</td>
+        <td class="prod-studio">Trend VFX</td>
+        <td class="prod-year">2023</td>
+        <td><span class="prod-type">Feature Film</span></td>
+      </tr>
+      <tr>
+        <td><div class="prod-title">Resalet El Imam</div></td>
+        <td class="prod-role">Compositor</td>
+        <td class="prod-studio">Mercury Visual Solution</td>
+        <td class="prod-year">2023</td>
+        <td><span class="prod-type">Drama Series</span></td>
+      </tr>
+      <tr>
+        <td><div class="prod-title">Basyoni &amp; Hussein Gamal: Za3lana</div></td>
+        <td class="prod-role">Senior Compositor</td>
+        <td class="prod-studio">Gemini Studio</td>
+        <td class="prod-year">2024</td>
+        <td><span class="prod-type">Music Video</span></td>
+      </tr>
+      <tr>
+        <td><div class="prod-title">60+ Productions — Film, Drama &amp; Commercial</div></td>
+        <td class="prod-role">Various</td>
+        <td class="prod-studio">Multiple Studios</td>
+        <td class="prod-year">2021–25</td>
+        <td>
+          <a href="https://www.imdb.com/name/nm13441994/" target="_blank"
+             style="color:var(--gold);text-decoration:none;font-size:10px;letter-spacing:.1em">
+            VIEW IMDB ↗
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="margin-top:32px;font-size:11px;color:var(--muted);letter-spacing:.05em;line-height:1.8">
+    Full production history available at
+    <a href="https://www.imdb.com/name/nm13441994/" target="_blank" style="color:var(--gold);text-decoration:none">
+      imdb.com/name/nm13441994
+    </a>
+  </p>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-bg"></div>
+  <div class="contact-tagline">Let's build something extraordinary together.</div>
+  <div class="contact-cta">GET IN TOUCH</div>
+  <div class="contact-links">
+    <a class="contact-btn primary" href="mailto:alaa.negm18@gmail.com">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+      alaa.negm18@gmail.com
+    </a>
+    <a class="contact-btn secondary" href="tel:+201224407120">+20 122 440 7120</a>
+    <a class="contact-btn secondary" href="https://www.linkedin.com/in/alaanegm/" target="_blank">LinkedIn ↗</a>
+    <a class="contact-btn secondary" href="https://www.imdb.com/name/nm13441994/" target="_blank">IMDb ↗</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 Alaa Negm &nbsp;·&nbsp; VFX Compositor &nbsp;·&nbsp; Cairo, Egypt</span>
+  <span>
+    <a href="mailto:alaa.negm18@gmail.com">alaa.negm18@gmail.com</a>
+    &nbsp;·&nbsp;
+    <a href="https://www.imdb.com/name/nm13441994/" target="_blank">IMDb nm13441994</a>
+  </span>
+  <span style="color:var(--border)">NUKE · MOCHA PRO · AE</span>
+</footer>
+
+<script>
+// CURSOR
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+document.addEventListener('mousemove',e=>{
+  cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px';
+  ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px';
+});
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.width='60px';ring.style.height='60px';cursor.style.transform='translate(-50%,-50%) scale(0)'});
+  el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px';cursor.style.transform='translate(-50%,-50%) scale(1)'});
+});
+
+// COUNT-UP
+function countUp(el){
+  const target=parseInt(el.dataset.target),dur=2000,start=performance.now();
+  function step(now){
+    const t=Math.min((now-start)/dur,1),ease=1-Math.pow(1-t,3);
+    el.textContent=Math.floor(ease*target);
+    if(t<1)requestAnimationFrame(step);else el.textContent=target;
+  }
+  requestAnimationFrame(step);
+}
+const cObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){countUp(e.target);cObs.unobserve(e.target)}});
+},{threshold:.5});
+document.querySelectorAll('.count-up').forEach(el=>cObs.observe(el));
+
+// SKILL BARS
+const bObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.style.transform=`scaleX(${e.target.dataset.width})`;
+      bObs.unobserve(e.target);
+    }
+  });
+},{threshold:.3});
+document.querySelectorAll('.skill-bar').forEach(b=>bObs.observe(b));
+
+// TIMELINE REVEAL
+const tObs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{
+    if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*120);tObs.unobserve(e.target)}
+  });
+},{threshold:.15});
+document.querySelectorAll('.timeline-item').forEach(el=>tObs.observe(el));
+</script>
+</body>
+</html>
