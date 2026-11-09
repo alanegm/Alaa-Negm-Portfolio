@@ -453,13 +453,13 @@ document.getElementById('projects').outerHTML = P.map(p=>{
 /* interiors */
 const CASES=[
  {t:'Eleven', s:'Retail fit-out · clothing store', i:[['eleven_b1','Shell','Received as bare brick and loose cabling'],['eleven_r1','3ds Max','Backlit logo on timber slats, grass walls, black track lighting'],['eleven_a2','Delivered','Built and trading']]},
- {t:'Juventus PlayStation Café', s:'Hospitality · Borg El Arab', i:[['cafe_p3','Shell','Black ceiling and spotlights going in'],['cafe_r2','3ds Max','Lit crest wall, timber shelving, neon PlayStation sign'],['cafe_a1','Delivered','Opened to customers']]},
+ {t:'Juventus PlayStation Café', s:'Hospitality · Borg El Arab', i:[['cafe_r2','3ds Max','Lit crest wall, timber shelving, neon PlayStation sign'],['cafe_a1','Delivered','Opened to customers']]},
  {t:'Residential apartment', s:'Kitchen · bedroom · living', i:[['apt_p2','Shell','Raw ceilings before gypsum works'],['apt_r1','3ds Max','Blue gypsum frame carried through every room'],['apt_p7','Delivered','Ceiling feature built on site']]}
 ];
 const GAL=[['d_living1','Living room'],['d_bedroom_main','Master bedroom'],['d_lounge','Lounge'],['d_dining','Dining'],['d_living3','Family living'],['d_bath','Bathroom'],['d_reception','Reception'],['d_piano','Music corner']];
 document.getElementById('cases').innerHTML=CASES.map(c=>`
   <div class="case reveal"><div class="case-h"><h3>${esc(c.t)}</h3><span class="mono" style="color:var(--muted)">${esc(c.s)}</span></div>
-  <ul class="tri">${c.i.map(([f,k,d])=>`<li><button data-lb="assets/int_${f}.jpg" data-cap="${esc(c.t)} — ${esc(k)}"><div class="im" data-k="${esc(k)}"><img decoding="async" src="assets/int_${f}.jpg" alt="${esc(c.t)} ${esc(k)}"></div><div class="sn">${esc(d)}</div></button></li>`).join('')}</ul></div>`).join('');
+  <ul class="tri" style="${c.i.length==2?'grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr))':''}">${c.i.map(([f,k,d])=>`<li><button data-lb="assets/int_${f}.jpg" data-cap="${esc(c.t)} — ${esc(k)}"><div class="im" data-k="${esc(k)}"><img decoding="async" src="assets/int_${f}.jpg" alt="${esc(c.t)} ${esc(k)}"></div><div class="sn">${esc(d)}</div></button></li>`).join('')}</ul></div>`).join('');
 document.getElementById('gal').innerHTML=GAL.map(([f,l])=>`<li><button data-lb="assets/int_${f}.jpg" data-cap="3ds Max — ${esc(l)}"><div class="im"><img decoding="async" src="assets/int_${f}.jpg" alt="${esc(l)} render"></div><div class="sn mono" style="margin-top:8px;color:var(--ink-2)">${esc(l)}</div></button></li>`).join('');
 
 /* compare sliders */
