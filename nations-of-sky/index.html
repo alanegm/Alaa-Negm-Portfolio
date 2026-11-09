@@ -169,6 +169,25 @@ details.prompt summary::after{content:"+"; color:var(--accent); font-size:16px; 
 details.prompt[open] summary::after{content:"–"}
 details.prompt pre{margin:0; padding:0 16px 16px; white-space:pre-wrap; font-family:var(--mono); font-size:12.5px; line-height:1.65; color:var(--ink-2)}
 
+/* interiors */
+.case{margin-bottom:44px}
+.case-h{display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; border-bottom:1px solid var(--line); padding-bottom:10px; margin-bottom:14px}
+.case-h h3{font-family:var(--display); font-stretch:115%; font-weight:600; font-size:clamp(22px,3vw,30px); margin:0}
+.tri{list-style:none; margin:0; padding:0; display:grid; gap:10px; grid-template-columns:1fr}
+@media (min-width:700px){ .tri{grid-template-columns:repeat(3,minmax(0,1fr))} }
+.tri button,.gal button{all:unset; cursor:zoom-in; display:block; width:100%}
+.tri .im{aspect-ratio:4/3; overflow:hidden; background:var(--chip); position:relative}
+.tri img,.gal img{width:100%; height:100%; object-fit:cover; transition:transform .5s}
+.tri button:hover img,.gal button:hover img{transform:scale(1.03)}
+.tri .im::after{content:attr(data-k); position:absolute; top:10px; left:10px; font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:#fff; background:rgba(0,0,0,.5); padding:4px 7px; border-radius:2px}
+.tri .sn{margin-top:8px; font-size:14px; color:var(--ink-2)}
+.tri li{position:relative}
+@media (min-width:700px){ .tri li:not(:last-child)::after{content:"→"; position:absolute; right:-9px; top:calc(37.5% - 9px); width:18px; height:18px; display:grid; place-items:center; font-size:12px; background:var(--accent); color:var(--accent-ink); border-radius:50%; z-index:2} }
+.gal{list-style:none; margin:0; padding:0; display:grid; gap:10px; grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (min-width:900px){ .gal{grid-template-columns:repeat(4,minmax(0,1fr))} }
+.gal .im{aspect-ratio:16/10; overflow:hidden; background:var(--chip)}
+@media (prefers-reduced-motion: reduce){ .tri img,.gal img{transition:none} }
+
 /* lightbox */
 dialog.lb{border:0; padding:0; background:transparent; max-width:min(1200px, 94vw); max-height:92vh; color:#fff}
 dialog.lb::backdrop{background:rgba(10,10,9,.88)}
@@ -201,6 +220,7 @@ footer{border-top:1px solid var(--line-2); margin-top:64px; padding:40px 0 calc(
       <a href="#skyridge">SkyRidge</a>
       <a href="#perla">Perla</a>
       <a href="#jirian">Jirian</a>
+      <a href="#interiors">Interiors</a>
     </nav>
     <button class="theme" id="themeBtn" aria-label="Toggle light / dark">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><path d="M12 4v16" /><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
@@ -274,6 +294,22 @@ footer{border-top:1px solid var(--line-2); margin-top:64px; padding:40px 0 calc(
   </section>
 
   <div id="projects"></div>
+
+  <!-- INTERIORS -->
+  <section id="interiors" class="sec">
+    <div class="wrap">
+      <div class="sec-h reveal">
+        <div class="eyebrow">03 — Built work · 3ds Max</div>
+        <div>
+          <h2 class="disp">From render to reality.</h2>
+          <p>Before the AI pipeline: interiors I designed in 3ds Max and then delivered on site. Shell, render, handover — the same discipline of matching a visual promise to what actually gets built.</p>
+        </div>
+      </div>
+      <div id="cases"></div>
+      <div class="strip-h reveal"><span class="eyebrow">3ds Max design renders</span><span class="mono" style="color:var(--muted)">Tap to enlarge</span></div>
+      <ul class="gal reveal" id="gal"></ul>
+    </div>
+  </section>
 </main>
 
 <footer>
@@ -298,6 +334,7 @@ footer{border-top:1px solid var(--line-2); margin-top:64px; padding:40px 0 calc(
         <ul>
           <li>Nuke 3D — massing, camera, mattes</li>
           <li>Gemini — look-dev, clean plates, angles</li>
+          <li>3ds Max — interior design &amp; render</li>
           <li>Google Flow — Omni 1.2 Flash video</li>
         </ul>
       </div>
@@ -413,6 +450,18 @@ document.getElementById('projects').outerHTML = P.map(p=>{
   </section>`;
 }).join('');
 
+/* interiors */
+const CASES=[
+ {t:'Eleven', s:'Retail fit-out · clothing store', i:[['eleven_b1','Shell','Received as bare brick and loose cabling'],['eleven_r1','3ds Max','Backlit logo on timber slats, grass walls, black track lighting'],['eleven_a2','Delivered','Built and trading']]},
+ {t:'Juventus PlayStation Café', s:'Hospitality · Borg El Arab', i:[['cafe_p3','Shell','Black ceiling and spotlights going in'],['cafe_r2','3ds Max','Lit crest wall, timber shelving, neon PlayStation sign'],['cafe_a1','Delivered','Opened to customers']]},
+ {t:'Residential apartment', s:'Kitchen · bedroom · living', i:[['apt_p2','Shell','Raw ceilings before gypsum works'],['apt_r1','3ds Max','Blue gypsum frame carried through every room'],['apt_p7','Delivered','Ceiling feature built on site']]}
+];
+const GAL=[['d_living1','Living room'],['d_bedroom_main','Master bedroom'],['d_lounge','Lounge'],['d_dining','Dining'],['d_living3','Family living'],['d_bath','Bathroom'],['d_reception','Reception'],['d_piano','Music corner']];
+document.getElementById('cases').innerHTML=CASES.map(c=>`
+  <div class="case reveal"><div class="case-h"><h3>${esc(c.t)}</h3><span class="mono" style="color:var(--muted)">${esc(c.s)}</span></div>
+  <ul class="tri">${c.i.map(([f,k,d])=>`<li><button data-lb="assets/int_${f}.jpg" data-cap="${esc(c.t)} — ${esc(k)}"><div class="im" data-k="${esc(k)}"><img decoding="async" src="assets/int_${f}.jpg" alt="${esc(c.t)} ${esc(k)}"></div><div class="sn">${esc(d)}</div></button></li>`).join('')}</ul></div>`).join('');
+document.getElementById('gal').innerHTML=GAL.map(([f,l])=>`<li><button data-lb="assets/int_${f}.jpg" data-cap="3ds Max — ${esc(l)}"><div class="im"><img decoding="async" src="assets/int_${f}.jpg" alt="${esc(l)} render"></div><div class="sn mono" style="margin-top:8px;color:var(--ink-2)">${esc(l)}</div></button></li>`).join('');
+
 /* compare sliders */
 document.querySelectorAll('[data-cmp]').forEach(el=>{
   let drag=false;
@@ -480,7 +529,7 @@ document.querySelectorAll('.reveal').forEach(n=>rio.observe(n));
 /* nav highlight */
 const links=[...document.querySelectorAll('.nav a')];
 const sio = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ links.forEach(a=>a.classList.toggle('on', a.getAttribute('href')==='#'+e.target.id)); } }), {rootMargin:'-45% 0px -50% 0px'});
-['pipeline','orb','skyridge','perla','jirian'].forEach(id=>{ const s=document.getElementById(id); if(s) sio.observe(s); });
+['pipeline','orb','skyridge','perla','jirian','interiors'].forEach(id=>{ const s=document.getElementById(id); if(s) sio.observe(s); });
 
 /* theme */
 const root=document.documentElement;
