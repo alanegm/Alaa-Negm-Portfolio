@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Clay to Film</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="An AI visualization pipeline for four real-estate developments — clay massing to photoreal film. Concept study by Alaa Negm.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ECEAE6; --surface:#F6F5F2; --ink:#1A1A19; --ink-2:#3B3A37; --muted:#6E6A63;
+  --line:rgba(26,26,25,.14); --line-2:rgba(26,26,25,.28);
+  --accent:#8F5F34; --accent-ink:#FFFFFF; --chip:#E2DFD9;
+  --shadow:0 1px 0 rgba(0,0,0,.04), 0 24px 48px -32px rgba(0,0,0,.35);
+  --gut:max(16px, env(safe-area-inset-left, 0px));
+  --gut-r:max(16px, env(safe-area-inset-right, 0px));
+  --maxw:1320px;
+  --display:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --sans:"IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#111110; --surface:#191918; --ink:#ECEAE5; --ink-2:#C9C6BF; --muted:#9A968E;
+    --line:rgba(236,234,229,.12); --line-2:rgba(236,234,229,.26);
+    --accent:#C99A6B; --accent-ink:#141312; --chip:#232321;
+    --shadow:0 1px 0 rgba(255,255,255,.03), 0 24px 48px -28px rgba(0,0,0,.8);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#111110; --surface:#191918; --ink:#ECEAE5; --ink-2:#C9C6BF; --muted:#9A968E;
+  --line:rgba(236,234,229,.12); --line-2:rgba(236,234,229,.26);
+  --accent:#C99A6B; --accent-ink:#141312; --chip:#232321;
+  --shadow:0 1px 0 rgba(255,255,255,.03), 0 24px 48px -28px rgba(0,0,0,.8);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; -webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans); font-size:16px; line-height:1.55; overflow-x:hidden}
+img,video{display:block; max-width:100%}
+a{color:inherit}
+.wrap{max-width:var(--maxw); margin:0 auto; padding-left:var(--gut); padding-right:var(--gut-r)}
+.mono{font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase}
+.eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted)}
+.disp{font-family:var(--display); font-stretch:115%; font-weight:600; letter-spacing:-.01em; line-height:.95; margin:0}
+
+/* top bar */
+.bar{position:sticky; top:0; z-index:20; background:color-mix(in srgb, var(--bg) 86%, transparent); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex; align-items:center; gap:20px; height:56px}
+.mark{display:flex; align-items:center; gap:10px; text-decoration:none; white-space:nowrap}
+.mark b{font-family:var(--display); font-stretch:125%; font-weight:700; font-size:14px; letter-spacing:.04em}
+.mark i{width:18px; height:18px; border:1.5px solid var(--ink); position:relative; flex:none}
+.mark i::after{content:""; position:absolute; inset:3px 3px 3px 50%; background:var(--accent)}
+.nav{display:flex; gap:4px; margin-left:auto; overflow-x:auto; scrollbar-width:none; min-width:0}
+.nav::-webkit-scrollbar{display:none}
+.nav a{font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase; text-decoration:none; color:var(--muted); padding:8px 10px; border-radius:2px; white-space:nowrap}
+.nav a:hover,.nav a.on{color:var(--ink)}
+.nav a.on{box-shadow:inset 0 -2px 0 var(--accent)}
+.theme{flex:none; width:36px; height:36px; border:1px solid var(--line-2); background:transparent; color:var(--ink); border-radius:50%; cursor:pointer; display:grid; place-items:center}
+.theme svg{width:16px; height:16px}
+
+/* hero */
+.hero{padding:56px 0 32px}
+.hero-top{display:grid; grid-template-columns:1fr; gap:28px; align-items:end; margin-bottom:36px}
+@media (min-width:900px){ .hero-top{grid-template-columns:1.35fr 1fr; gap:48px} }
+.hero h1{font-size:clamp(48px, 10vw, 132px)}
+.hero h1 em{font-style:normal; color:var(--accent)}
+.hero p.lede{font-size:clamp(17px, 1.6vw, 20px); color:var(--ink-2); max-width:46ch; margin:0 0 18px}
+.hero .meta{display:flex; flex-wrap:wrap; gap:8px}
+.tag{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; padding:6px 9px; border:1px solid var(--line-2); border-radius:2px; color:var(--ink-2); white-space:nowrap}
+
+/* compare */
+.cmp{position:relative; overflow:hidden; background:#000; user-select:none; -webkit-user-select:none; touch-action:pan-y; cursor:ew-resize; --pos:50%; box-shadow:var(--shadow)}
+.cmp > .layer{position:absolute; inset:0}
+.cmp > .layer > img,.cmp > .layer > video{width:100%; height:100%; object-fit:cover}
+.cmp > .layer.before{clip-path:inset(0 calc(100% - var(--pos)) 0 0)}
+.cmp .rule{position:absolute; top:0; bottom:0; left:var(--pos); width:0; pointer-events:none}
+.cmp .rule::before{content:""; position:absolute; top:0; bottom:0; left:-.75px; width:1.5px; background:#fff; box-shadow:0 0 0 .5px rgba(0,0,0,.25)}
+.cmp .knob{position:absolute; top:50%; left:0; width:44px; height:44px; transform:translate(-50%,-50%); border-radius:50%; background:#fff; color:#111; display:grid; place-items:center; box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.cmp .knob svg{width:20px; height:20px}
+.cmp:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+.cmp .lbl{position:absolute; top:12px; font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:#fff; background:rgba(0,0,0,.45); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); padding:5px 8px; border-radius:2px; pointer-events:none; transition:opacity .2s}
+.cmp .lbl.l{left:12px} .cmp .lbl.r{right:12px}
+.cmp .play{position:absolute; bottom:12px; right:12px; width:36px; height:36px; border-radius:50%; border:0; background:rgba(0,0,0,.5); color:#fff; display:grid; place-items:center; cursor:pointer; backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px)}
+.cmp .play svg{width:14px; height:14px}
+.cmp .hint{position:absolute; bottom:14px; left:12px; font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:rgba(255,255,255,.85); pointer-events:none; transition:opacity .4s}
+.cmp.touched .hint{opacity:0}
+.r169{aspect-ratio:16/9} .r916{aspect-ratio:9/16} .rP{aspect-ratio:1257/1600} .rL{aspect-ratio:16/9}
+
+/* section heads */
+section{scroll-margin-top:64px}
+.sec{padding:72px 0}
+.sec-h{display:grid; grid-template-columns:1fr; gap:16px; margin-bottom:36px; border-top:1px solid var(--line-2); padding-top:18px}
+@media (min-width:900px){ .sec-h{grid-template-columns:220px 1fr} }
+.sec-h h2{font-size:clamp(32px, 4.6vw, 56px)}
+.sec-h p{color:var(--ink-2); max-width:62ch; margin:14px 0 0}
+
+/* pipeline */
+.pipe{list-style:none; margin:0; padding:0; display:grid; gap:1px; background:var(--line); border:1px solid var(--line); grid-template-columns:1fr}
+@media (min-width:640px){ .pipe{grid-template-columns:repeat(2,1fr)} }
+@media (min-width:1080px){ .pipe{grid-template-columns:repeat(3,1fr)} }
+.pipe li{background:var(--surface); padding:18px; display:grid; grid-template-columns:96px 1fr; gap:16px; align-items:start}
+.pipe .th{aspect-ratio:3/4; overflow:hidden; background:var(--chip)}
+.pipe .th img,.pipe .th video{width:100%; height:100%; object-fit:cover}
+.pipe .n{font-family:var(--mono); font-size:12px; color:var(--accent); letter-spacing:.06em}
+.pipe h3{font-family:var(--display); font-stretch:110%; font-weight:600; font-size:19px; margin:4px 0 6px; line-height:1.15}
+.pipe p{margin:0; font-size:14px; color:var(--ink-2)}
+.pipe .tool{margin-top:10px; font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted)}
+
+/* index */
+.idx{list-style:none; margin:0; padding:0; border-top:1px solid var(--line-2)}
+.idx a{display:grid; grid-template-columns:44px 1fr auto; gap:12px; align-items:baseline; padding:18px 4px; border-bottom:1px solid var(--line); text-decoration:none; transition:padding .25s, background .25s}
+.idx a:hover{background:var(--surface); padding-left:12px}
+.idx .no{font-family:var(--mono); font-size:12px; color:var(--muted)}
+.idx .nm{font-family:var(--display); font-stretch:115%; font-weight:600; font-size:clamp(22px, 3.2vw, 34px); line-height:1.05}
+.idx .loc{font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); text-align:right}
+.idx .st{display:inline-block; margin-left:10px; vertical-align:middle; font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; padding:3px 6px; border:1px solid var(--accent); color:var(--accent); border-radius:2px}
+@media (max-width:560px){ .idx a{grid-template-columns:36px 1fr} .idx .loc{grid-column:2; text-align:left} }
+
+/* project */
+.proj{padding:72px 0 24px}
+.tb{display:grid; grid-template-columns:repeat(2,1fr); border:1px solid var(--line-2); margin-bottom:28px; background:var(--surface)}
+@media (min-width:900px){ .tb{grid-template-columns:2.2fr repeat(4,1fr)} }
+.tb > div{padding:12px 14px; border-right:1px solid var(--line); border-bottom:1px solid var(--line); min-width:0}
+.tb .t{grid-column:1 / -1}
+@media (min-width:900px){ .tb .t{grid-column:auto} .tb > div{border-bottom:0} .tb > div:last-child{border-right:0} }
+.tb .k{font-family:var(--mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+.tb .v{font-family:var(--mono); font-size:13px; margin-top:2px; overflow-wrap:anywhere}
+.tb h2{font-size:clamp(34px, 5.4vw, 64px); margin-top:4px}
+.proj .lead{font-size:17px; color:var(--ink-2); max-width:70ch; margin:0 0 28px}
+
+.grid-p{display:grid; gap:20px; grid-template-columns:1fr}
+@media (min-width:760px){ .grid-p.portrait{grid-template-columns:minmax(0,9fr) minmax(0,9.8fr)} }
+.panel{min-width:0}
+.panel .cap{display:flex; justify-content:space-between; gap:12px; align-items:center; margin-top:10px; flex-wrap:wrap}
+.panel .cap .mono{color:var(--muted)}
+.seg{display:inline-flex; border:1px solid var(--line-2); border-radius:2px; overflow:hidden}
+.seg button{font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase; border:0; background:transparent; color:var(--muted); padding:7px 10px; cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink); color:var(--bg)}
+.single{position:relative; overflow:hidden; background:#000; box-shadow:var(--shadow)}
+.single video,.single img{width:100%; height:100%; object-fit:cover}
+.single .lbl{position:absolute; top:12px; left:12px; font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:#fff; background:rgba(0,0,0,.45); padding:5px 8px; border-radius:2px}
+.single .wip{position:absolute; left:0; right:0; bottom:0; padding:28px 16px 14px; background:linear-gradient(transparent, rgba(0,0,0,.7)); color:#fff; font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase}
+.single .play{position:absolute; bottom:12px; right:12px; width:36px; height:36px; border-radius:50%; border:0; background:rgba(0,0,0,.5); color:#fff; display:grid; place-items:center; cursor:pointer}
+.single .play svg{width:14px; height:14px}
+
+/* stage strip */
+.strip-h{display:flex; justify-content:space-between; align-items:baseline; margin:36px 0 12px; gap:12px}
+.strip{list-style:none; margin:0; padding:0; display:grid; gap:10px; grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (min-width:900px){ .strip{grid-template-columns:repeat(6,minmax(0,1fr))} }
+.strip button{all:unset; cursor:zoom-in; display:block; width:100%}
+.strip button:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.strip .im{aspect-ratio:4/5; overflow:hidden; background:var(--chip)}
+.strip.land .im{aspect-ratio:16/10}
+.strip img{width:100%; height:100%; object-fit:cover; transition:transform .5s}
+.strip button:hover img{transform:scale(1.04)}
+.strip .sn{display:flex; gap:8px; margin-top:8px; font-family:var(--mono); font-size:11px; letter-spacing:.06em; text-transform:uppercase}
+.strip .sn b{color:var(--accent); font-weight:500}
+.strip .sn span{color:var(--ink-2)}
+
+/* prompt */
+details.prompt{margin-top:28px; border:1px solid var(--line); background:var(--surface)}
+details.prompt summary{cursor:pointer; list-style:none; padding:14px 16px; display:flex; justify-content:space-between; gap:12px; font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase}
+details.prompt summary::-webkit-details-marker{display:none}
+details.prompt summary::after{content:"+"; color:var(--accent); font-size:16px; line-height:1}
+details.prompt[open] summary::after{content:"–"}
+details.prompt pre{margin:0; padding:0 16px 16px; white-space:pre-wrap; font-family:var(--mono); font-size:12.5px; line-height:1.65; color:var(--ink-2)}
+
+/* lightbox */
+dialog.lb{border:0; padding:0; background:transparent; max-width:min(1200px, 94vw); max-height:92vh; color:#fff}
+dialog.lb::backdrop{background:rgba(10,10,9,.88)}
+dialog.lb img{max-width:100%; max-height:84vh; object-fit:contain; margin:0 auto}
+dialog.lb .lbc{display:flex; justify-content:space-between; gap:12px; margin-top:10px; font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase}
+dialog.lb button{font:inherit; color:#fff; background:transparent; border:1px solid rgba(255,255,255,.4); padding:6px 10px; border-radius:2px; cursor:pointer}
+
+/* footer */
+footer{border-top:1px solid var(--line-2); margin-top:64px; padding:40px 0 calc(40px + env(safe-area-inset-bottom, 0px))}
+.foot{display:grid; gap:28px; grid-template-columns:1fr}
+@media (min-width:900px){ .foot{grid-template-columns:1.4fr 1fr 1fr} }
+.foot h3{font-family:var(--display); font-stretch:115%; font-weight:600; font-size:28px; margin:0 0 4px}
+.foot ul{list-style:none; margin:8px 0 0; padding:0}
+.foot li{padding:6px 0; border-bottom:1px solid var(--line)}
+.foot a{text-decoration:none} .foot a:hover{color:var(--accent)}
+.disc{margin-top:28px; color:var(--muted); font-size:13px; max-width:80ch}
+
+.reveal{opacity:0; transform:translateY(16px); transition:opacity .8s ease, transform .8s ease}
+.reveal.in{opacity:1; transform:none}
+@media (prefers-reduced-motion: reduce){ .reveal{opacity:1; transform:none; transition:none} .strip img{transition:none} }
+</style>
+</head><body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="#top"><i aria-hidden="true"></i><b>CLAY&nbsp;→&nbsp;FILM</b></a>
+    <nav class="nav" aria-label="Projects">
+      <a href="#pipeline">Pipeline</a>
+      <a href="#orb">ORB</a>
+      <a href="#skyridge">SkyRidge</a>
+      <a href="#perla">Perla</a>
+      <a href="#jirian">Jirian</a>
+    </nav>
+    <button class="theme" id="themeBtn" aria-label="Toggle light / dark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="8"/><path d="M12 4v16" /><path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-top">
+        <div>
+          <div class="eyebrow" style="margin-bottom:18px">AI &amp; Visualization · Concept study · 2026</div>
+          <h1 class="disp">From clay<br>to <em>film.</em></h1>
+        </div>
+        <div>
+          <p class="lede">Four residential and commercial developments, taken from grey massing to photoreal motion. The geometry and camera are locked in 3D; AI is used only to dress them in material, light and life.</p>
+          <div class="meta">
+            <span class="tag">Nuke 3D</span><span class="tag">Gemini · Nano Banana</span><span class="tag">Google Flow · Omni 1.2 Flash</span><span class="tag">Topaz</span>
+          </div>
+        </div>
+      </div>
+      <div class="cmp r169 video" data-cmp tabindex="0" role="slider" aria-label="SkyRidge: clay massing versus final film" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+        <div class="layer after"><video data-master muted loop playsinline preload="metadata" poster="assets/skyridge_poster.jpg" src="assets/skyridge_film.mp4"></video></div>
+        <div class="layer before"><video data-follow muted loop playsinline preload="metadata" poster="assets/skyridge_clay.jpg" src="assets/skyridge_clayv.mp4"></video></div>
+        <span class="lbl l">Clay · Nuke 3D</span><span class="lbl r">Film · Omni 1.2 Flash</span>
+        <div class="rule"><div class="knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6l-5 6 5 6M15 6l5 6-5 6"/></svg></div></div>
+        <span class="hint">Drag to compare</span>
+        <button class="play" data-play aria-label="Pause"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></button>
+      </div>
+      <div class="panel"><div class="cap"><span class="mono">SkyRidge Executives — same camera, same frames, same volumes</span><span class="mono">120 f · 24 fps · 26 mm</span></div></div>
+    </div>
+  </section>
+
+  <!-- PIPELINE -->
+  <section id="pipeline" class="sec">
+    <div class="wrap">
+      <div class="sec-h reveal">
+        <div class="eyebrow">01 — Method</div>
+        <div>
+          <h2 class="disp">Six stages, one rule.</h2>
+          <p>3D owns the truth — scale, lens, camera path and building volumes. Generative models own the surface. That split is what keeps every frame faithful to the architecture while cutting look-development from weeks to hours.</p>
+        </div>
+      </div>
+      <ol class="pipe reveal">
+        <li><div class="th"><img src="assets/orb_ref.jpg" alt="ORB developer reference render"></div><div><div class="n">01</div><h3>Brief</h3><p>Developer renders and site facts fix the massing, materials and mood for each project.</p><div class="tool">Reference · Site data</div></div></li>
+        <li><div class="th"><img src="assets/orb_clay.jpg" alt="ORB clay massing"></div><div><div class="n">02</div><h3>Clay massing</h3><p>Volumes blocked at real scale; lens and camera move locked — 26–32 mm, 120 frames at 24 fps.</p><div class="tool">Nuke 3D · ScanlineRender</div></div></li>
+        <li><div class="th"><img src="assets/orb_ai.jpg" alt="ORB AI look-development still"></div><div><div class="n">03</div><h3>Look-dev</h3><p>The clay frame is restyled into a photoreal still that matches the brief, pixel-aligned to the 3D.</p><div class="tool">Gemini · Nano Banana</div></div></li>
+        <li><div class="th"><img src="assets/orb_plate.jpg" alt="ORB clean plate"></div><div><div class="n">04</div><h3>Clean plate &amp; mattes</h3><p>People, cars and foliage removed; difference mattes isolate each element for compositing.</p><div class="tool">Gemini edit · Nuke diff matte</div></div></li>
+        <li><div class="th"><video muted loop playsinline preload="none" data-auto poster="assets/orb_poster.jpg" src="assets/orb_film.mp4" aria-label="ORB film"></video></div><div><div class="n">05</div><h3>Motion</h3><p>The clay animation is re-rendered with the look-dev still as ingredient — camera and geometry survive untouched.</p><div class="tool">Google Flow · Omni 1.2 Flash</div></div></li>
+        <li><div class="th"><img src="assets/orb_a3.jpg" alt="ORB aerial angle"></div><div><div class="n">06</div><h3>Coverage &amp; finish</h3><p>Extra angles generated in the same look, then graded, upscaled and cut into the reel.</p><div class="tool">Gemini · Topaz · Edit</div></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- INDEX -->
+  <section class="sec" style="padding-top:8px">
+    <div class="wrap">
+      <div class="sec-h reveal">
+        <div class="eyebrow">02 — Projects</div>
+        <div><h2 class="disp">Four sites.</h2></div>
+      </div>
+      <ul class="idx reveal">
+        <li><a href="#orb"><span class="no">P.01</span><span class="nm">ORB</span><span class="loc">New Zayed · Residential tower</span></a></li>
+        <li><a href="#skyridge"><span class="no">P.02</span><span class="nm">SkyRidge Executives</span><span class="loc">Heliopolis, Cairo · Offices</span></a></li>
+        <li><a href="#perla"><span class="no">P.03</span><span class="nm">Perla</span><span class="loc">North Coast · Resort villas</span></a></li>
+        <li><a href="#jirian"><span class="no">P.04</span><span class="nm">Jirian Nile Islands</span><span class="loc">New Zayed · Island villas</span></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <div id="projects"></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <div class="eyebrow">Prepared by</div>
+        <h3>Alaa Negm</h3>
+        <div style="color:var(--ink-2)">Senior VFX Compositor — Nuke, 3D previs and AI-assisted visualization.</div>
+        <div class="mono" style="margin-top:12px; color:var(--muted); text-transform:none; letter-spacing:.02em">alaa.negm18@gmail.com</div>
+      </div>
+      <div>
+        <div class="eyebrow">Work</div>
+        <ul>
+          <li><a href="https://alanegm.github.io/Alaa-Negm-Portfolio/" target="_blank" rel="noopener">Portfolio ↗</a></li>
+          <li><a href="https://vimeo.com/1185664539" target="_blank" rel="noopener">Showreel · Vimeo ↗</a></li>
+          <li><a href="https://www.imdb.com/name/nm13441994" target="_blank" rel="noopener">IMDb ↗</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="eyebrow">Toolchain</div>
+        <ul>
+          <li>Nuke 3D — massing, camera, mattes</li>
+          <li>Gemini — look-dev, clean plates, angles</li>
+          <li>Google Flow — Omni 1.2 Flash video</li>
+        </ul>
+      </div>
+    </div>
+    <p class="disc">Independent concept study. Not affiliated with, commissioned or produced for Nations of Sky. Project names and reference renders belong to their owners and are shown for interview discussion only.</p>
+  </div>
+</footer>
+
+<dialog class="lb" id="lb">
+  <img id="lbImg" alt="">
+  <div class="lbc"><span id="lbCap"></span><button id="lbClose">Close</button></div>
+</dialog>
+
+<script>
+const ICON_PAUSE='<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg>';
+const ICON_PLAY='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg>';
+const KNOB='<div class="rule"><div class="knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6l-5 6 5 6M15 6l5 6-5 6"/></svg></div></div>';
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const P = [
+ {id:'orb', no:'P.01', name:'ORB', loc:'New Zayed', type:'Residential tower · 110 m', lens:'30 mm', orient:'portrait', film:'clay',
+  lead:'A slender tower wrapped in diagonal bronze fins. The clay pass fixes its 110 m height and the street-level push-in; Omni carries the fins, glazing and palm boulevard onto those exact frames.',
+  prompt:'Turn this grey clay massing video into a photorealistic architectural film of the ORB tower. Keep EXACTLY the same camera motion, timing, framing, building volumes, heights and proportions as the clay video. Apply the design from the reference image: a slender residential tower with bronze-champagne fins sweeping diagonally across the facade, a metal crown frame at the top, floor-to-ceiling glass, and a glass podium with vertical bronze louvers. Palm-lined boulevard in front, landscaped sidewalk, a few people walking, cars moving slowly. Warm golden-hour sun from the left, soft sky gradient. Photorealistic high-end real estate film, no text, no logos.',
+  a2:'Low angle', a3:'Aerial'},
+ {id:'skyridge', no:'P.02', name:'SkyRidge Executives', loc:'Heliopolis, Cairo', type:'Office campus · sky bridge', lens:'26 mm', orient:'landscape', film:'clay',
+  lead:'Two office blocks tied by a glass sky bridge. Terracotta screens and dark aluminium frames are applied in look-dev; the plaza, people and traffic are added in motion.',
+  prompt:'Turn this grey clay massing video into a photorealistic architectural film of the SkyRidge office complex. Keep EXACTLY the same camera motion, timing, framing, building volumes, heights and proportions as the clay video. Apply the design from the reference image: two modern office blocks connected by a glass sky bridge, terracotta perforated metal panels, dark grey aluminum frames, horizontal louvers and glass curtain walls. Landscaped plaza with trees and planters in front, paved walkways, office workers walking, a few cars moving slowly in the parking. Warm sunset light reflected in the glass. Photorealistic high-end real estate film, no text, no logos.',
+  a2:'Plaza', a3:'Aerial', noRef:true},
+ {id:'perla', no:'P.03', name:'Perla', loc:'North Coast · km 173', type:'Resort villas · terrace', lens:'28 mm', orient:'portrait', film:'clay',
+  lead:'A villa terrace on the Mediterranean. Walls, pergola and pool edge are modelled as clay; Omni fills in white plaster, stone, turquoise water and sea light.',
+  prompt:'Turn this grey clay massing video into a photorealistic architectural film of the Perla North Coast villa terrace. Keep EXACTLY the same camera motion, timing, framing, walls, pool, pergola, volumes and proportions as the clay video. Apply the design from the reference image: white Mediterranean architecture, smooth white plaster walls, natural stone details, a wooden pergola, a turquoise infinity pool, light stone deck. Palm trees and potted plants on the terrace, white sun loungers, the turquoise Mediterranean sea and clear blue sky beyond. Sunlight sparkles on the pool water, palm leaves move in the sea breeze. Bright summer afternoon. Photorealistic high-end real estate film, no text, no logos.',
+  a2:'Aerial', a3:'Pool level'},
+ {id:'jirian', no:'P.04', name:'Jirian Nile Islands', loc:'New Zayed', type:'Island villas · waterfront', lens:'30 mm', orient:'portrait', film:'i2v',
+  lead:'Villas on landscaped islands with private docks. The island layout and waterline come from the clay; the 10-second drone move was driven from the look-dev frame (image-to-video), so it is shown beside the clay rather than wiped over it.',
+  a2:'Low drone', a3:'Terrace'}
+];
+
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+function filmPanel(p,k){
+  const vr = p.orient==='portrait' ? 'r916' : 'r169';
+  if(p.film==='clay') return `
+    <div class="cmp ${vr} video" data-cmp tabindex="0" role="slider" aria-label="${esc(p.name)}: clay animation versus film" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+      <div class="layer after"><video data-master muted loop playsinline preload="none" poster="assets/${k}_poster.jpg" src="assets/${k}_film.mp4"></video></div>
+      <div class="layer before"><video data-follow muted loop playsinline preload="none" poster="assets/${k}_clay.jpg" src="assets/${k}_clayv.mp4"></video></div>
+      <span class="lbl l">Clay</span><span class="lbl r">Film</span>${KNOB}
+      <span class="hint">Drag to compare</span>
+      <button class="play" data-play aria-label="Pause">${ICON_PAUSE}</button>
+    </div>
+    <div class="cap"><span class="mono">Motion · clay → film</span><span class="mono">Video-to-video · 5 s · 720p</span></div>`;
+  if(p.film==='i2v') return `
+    <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:10px">
+      <div class="single r916"><video data-auto muted loop playsinline preload="none" poster="assets/${k}_clay.jpg" src="assets/${k}_clayv.mp4"></video><span class="lbl">Clay</span></div>
+      <div class="single r916"><video data-auto muted loop playsinline preload="none" poster="assets/${k}_poster.jpg" src="assets/${k}_film.mp4"></video><span class="lbl">Film</span></div>
+    </div>
+    <div class="cap"><span class="mono">Motion · look-dev frame → film</span><span class="mono">Image-to-video · 10 s · 720p</span></div>`;
+  return `
+    <div class="single ${vr}"><video data-auto muted loop playsinline preload="none" poster="assets/${k}_clay.jpg" src="assets/${k}_clayv.mp4"></video><span class="lbl">Clay animation</span><div class="wip">Omni film — in production</div></div>
+    <div class="cap"><span class="mono">Motion · clay previs</span><span class="mono">120 f · 24 fps</span></div>`;
+}
+
+function imgPanel(p,k){
+  const ir = p.orient==='portrait' ? 'rP' : 'rL';
+  return `
+    <div class="cmp ${ir}" data-cmp data-pairs tabindex="0" role="slider" aria-label="${esc(p.name)}: still comparison" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+      <div class="layer after"><img decoding="async" src="assets/${k}_ai.jpg" alt="${esc(p.name)} AI look-dev still"></div>
+      <div class="layer before"><img decoding="async" src="assets/${k}_clay.jpg" alt="${esc(p.name)} clay massing still"></div>
+      <span class="lbl l">Clay</span><span class="lbl r">Look-dev</span>${KNOB}
+      <span class="hint">Drag to compare</span>
+    </div>
+    <div class="cap">
+      <div class="seg" role="group" aria-label="Comparison">
+        <button aria-pressed="true" data-pair="clay|ai|Clay|Look-dev">Clay → Look-dev</button>
+        <button aria-pressed="false" data-pair="plate|ai|Clean plate|Look-dev">Plate → Look-dev</button>
+      </div>
+      <span class="mono">Still · ${p.orient==='portrait'?'1257 × 1600':'1600 × 900'}</span>
+    </div>`;
+}
+
+function strip(p,k){
+  const s = [];
+  if(!p.noRef) s.push(['ref','Brief']);
+  s.push(['clay','Clay'],['ai','Look-dev'],['plate','Clean plate'],['a2',p.a2],['a3',p.a3]);
+  let n=0;
+  return `<ul class="strip ${p.orient==='landscape'?'land':''}">${s.map(([f,l])=>{n++;return `
+    <li><button data-lb="assets/${k}_${f}.jpg" data-cap="${esc(p.name)} — ${String(n).padStart(2,'0')} ${esc(l)}">
+      <div class="im"><img decoding="async" src="assets/${k}_${f}.jpg" alt="${esc(p.name)} ${esc(l)}"></div>
+      <div class="sn"><b>${String(n).padStart(2,'0')}</b><span>${esc(l)}</span></div>
+    </button></li>`}).join('')}</ul>`;
+}
+
+document.getElementById('projects').outerHTML = P.map(p=>{
+  const k = p.key || p.id;
+  return `
+  <section class="proj" id="${p.id}">
+    <div class="wrap">
+      <div class="tb reveal">
+        <div class="t"><div class="k">${p.no} · Project</div><h2 class="disp">${esc(p.name)}</h2></div>
+        <div><div class="k">Location</div><div class="v">${esc(p.loc)}</div></div>
+        <div><div class="k">Typology</div><div class="v">${esc(p.type)}</div></div>
+        <div><div class="k">Lens · Frames</div><div class="v">${p.lens} · 120 f</div></div>
+        <div><div class="k">Status</div><div class="v">${p.film==='none'?'Film in production':'Delivered'}</div></div>
+      </div>
+      <p class="lead reveal">${esc(p.lead)}</p>
+      <div class="grid-p ${p.orient} reveal">
+        <div class="panel">${filmPanel(p,k)}</div>
+        <div class="panel">${imgPanel(p,k)}</div>
+      </div>
+      <div class="strip-h reveal"><span class="eyebrow">Breakdown</span><span class="mono" style="color:var(--muted)">Tap to enlarge</span></div>
+      <div class="reveal">${strip(p,k)}</div>
+      ${p.prompt?`<details class="prompt reveal"><summary>Omni prompt · clay → photoreal</summary><pre>${esc(p.prompt)}</pre></details>`:''}
+    </div>
+  </section>`;
+}).join('');
+
+/* compare sliders */
+document.querySelectorAll('[data-cmp]').forEach(el=>{
+  let drag=false;
+  const set = v=>{ v=Math.max(0,Math.min(100,v)); el.style.setProperty('--pos', v+'%'); el.setAttribute('aria-valuenow', Math.round(v));
+    el.querySelectorAll('.lbl.l').forEach(l=>l.style.opacity = v<14?0:1); el.querySelectorAll('.lbl.r').forEach(l=>l.style.opacity = v>86?0:1); };
+  const fromX = x=>{ const r=el.getBoundingClientRect(); set((x-r.left)/r.width*100); };
+  el.addEventListener('pointerdown', e=>{ if(e.target.closest('[data-play]')) return; drag=true; el.classList.add('touched'); try{el.setPointerCapture(e.pointerId)}catch(_){} fromX(e.clientX); });
+  el.addEventListener('pointermove', e=>{ if(drag) fromX(e.clientX); });
+  ['pointerup','pointercancel','lostpointercapture'].forEach(t=>el.addEventListener(t,()=>drag=false));
+  el.addEventListener('keydown', e=>{ const v=parseFloat(el.getAttribute('aria-valuenow'));
+    const step = e.shiftKey?10:2;
+    if(e.key==='ArrowLeft'){set(v-step); e.preventDefault(); el.classList.add('touched');}
+    if(e.key==='ArrowRight'){set(v+step); e.preventDefault(); el.classList.add('touched');}
+    if(e.key==='Home'){set(0); e.preventDefault();} if(e.key==='End'){set(100); e.preventDefault();} });
+  set(50);
+});
+
+/* pair toggles for stills */
+document.querySelectorAll('.seg').forEach(seg=>{
+  const cmp = seg.closest('.panel').querySelector('[data-pairs]');
+  seg.addEventListener('click', e=>{
+    const b = e.target.closest('button'); if(!b) return;
+    seg.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed', x===b));
+    const [bf, af, lb, la] = b.dataset.pair.split('|');
+    const key = cmp.querySelector('.after img').src.match(/assets\/(\w+?)_(ai|clay|plate)\.jpg/)[1];
+    cmp.querySelector('.before img').src = `assets/${key}_${bf}.jpg`;
+    cmp.querySelector('.after img').src = `assets/${key}_${af}.jpg`;
+    cmp.querySelector('.lbl.l').textContent = lb; cmp.querySelector('.lbl.r').textContent = la;
+  });
+});
+
+/* video: synced pairs + autoplay in view */
+const groups = [];
+document.querySelectorAll('.cmp.video').forEach(el=>{
+  const m = el.querySelector('[data-master]'), f = el.querySelector('[data-follow]');
+  groups.push({el, vids:[m,f], m, f, user:null});
+});
+document.querySelectorAll('video[data-auto]').forEach(v=>{
+  groups.push({el:v.closest('.single, .th') || v, vids:[v], m:v, f:null, user:null});
+});
+function playG(g){ g.vids.forEach(v=>{ if(v.preload==='none') v.preload='auto'; const pr=v.play(); if(pr) pr.catch(()=>{}); }); setIcon(g,true); }
+function pauseG(g){ g.vids.forEach(v=>v.pause()); setIcon(g,false); }
+function setIcon(g,on){ const b=g.el.querySelector && g.el.querySelector('[data-play]'); if(b){ b.innerHTML = on?ICON_PAUSE:ICON_PLAY; b.setAttribute('aria-label', on?'Pause':'Play'); } }
+groups.forEach(g=>{
+  const b = g.el.querySelector && g.el.querySelector('[data-play]');
+  if(b) b.addEventListener('click', e=>{ e.stopPropagation(); const on = !g.m.paused; g.user = on?'paused':'playing'; on?pauseG(g):playG(g); });
+  if(g.f){ g.m.addEventListener('seeked',()=>{ g.f.currentTime = g.m.currentTime; });
+    g.m.addEventListener('play',()=>{ g.f.currentTime = g.m.currentTime; }); }
+});
+setInterval(()=>{ groups.forEach(g=>{ if(!g.f || g.m.paused) return; const d=g.f.currentTime-g.m.currentTime; if(Math.abs(d)>0.06 && Math.abs(d)<4) g.f.currentTime=g.m.currentTime; if(g.f.paused){const p=g.f.play(); if(p)p.catch(()=>{});} }); }, 300);
+const io = new IntersectionObserver(es=>{ es.forEach(e=>{ const g = groups.find(x=>x.el===e.target); if(!g) return;
+  if(e.isIntersecting){ if(!reduce && g.user!=='paused') playG(g); } else pauseG(g); }); }, {threshold:.35});
+groups.forEach(g=>io.observe(g.el));
+
+/* lightbox */
+const lb=document.getElementById('lb'), lbImg=document.getElementById('lbImg'), lbCap=document.getElementById('lbCap');
+document.addEventListener('click', e=>{ const b=e.target.closest('[data-lb]'); if(!b) return; lbImg.src=b.dataset.lb; lbImg.alt=b.dataset.cap; lbCap.textContent=b.dataset.cap; if(lb.showModal) lb.showModal(); });
+document.getElementById('lbClose').onclick=()=>lb.close();
+lb.addEventListener('click', e=>{ if(e.target===lb) lb.close(); });
+
+/* reveal */
+const rio = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); rio.unobserve(e.target);} }), {rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.reveal').forEach(n=>rio.observe(n));
+
+/* nav highlight */
+const links=[...document.querySelectorAll('.nav a')];
+const sio = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ links.forEach(a=>a.classList.toggle('on', a.getAttribute('href')==='#'+e.target.id)); } }), {rootMargin:'-45% 0px -50% 0px'});
+['pipeline','orb','skyridge','perla','jirian'].forEach(id=>{ const s=document.getElementById(id); if(s) sio.observe(s); });
+
+/* theme */
+const root=document.documentElement;
+try{ const t=localStorage.getItem('c2f-theme'); if(t) root.dataset.theme=t; }catch(_){}
+document.getElementById('themeBtn').onclick=()=>{
+  const dark = root.dataset.theme ? root.dataset.theme==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  root.dataset.theme = dark?'light':'dark';
+  try{ localStorage.setItem('c2f-theme', root.dataset.theme); }catch(_){}
+};
+</script>
+</body></html>
