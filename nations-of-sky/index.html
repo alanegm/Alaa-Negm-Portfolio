@@ -240,7 +240,7 @@ footer{border-top:1px solid var(--line-2); margin-top:64px; padding:40px 0 calc(
         <div>
           <p class="lede">Four residential and commercial developments, taken from grey massing to photoreal motion. The geometry and camera are locked in 3D; AI is used only to dress them in material, light and life.</p>
           <div class="meta">
-            <span class="tag">Nuke 3D</span><span class="tag">Gemini · Nano Banana</span><span class="tag">Google Flow · Omni 1.2 Flash</span><span class="tag">Topaz</span>
+            <span class="tag">Nuke 3D</span><span class="tag">Gemini · Nano Banana</span><span class="tag">Google Flow · Omni 1.2 Flash</span><span class="tag">Nuke ML Upscale</span>
           </div>
         </div>
       </div>
@@ -252,7 +252,7 @@ footer{border-top:1px solid var(--line-2); margin-top:64px; padding:40px 0 calc(
         <span class="hint">Drag to compare</span>
         <button class="play" data-play aria-label="Pause"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></svg></button>
       </div>
-      <div class="panel"><div class="cap"><span class="mono">SkyRidge Executives — same camera, same frames, same volumes</span><span class="mono">120 f · 24 fps · 26 mm</span></div></div>
+      <div class="panel"><div class="cap"><span class="mono">SkyRidge Executives — same camera, same frames, same volumes</span><span class="mono">120 f · 24 fps · 26 mm · 1440p</span></div></div>
     </div>
   </section>
 
@@ -272,7 +272,7 @@ footer{border-top:1px solid var(--line-2); margin-top:64px; padding:40px 0 calc(
         <li><div class="th"><img src="assets/orb_ai.jpg" alt="ORB AI look-development still"></div><div><div class="n">03</div><h3>Look-dev</h3><p>The clay frame is restyled into a photoreal still that matches the brief, pixel-aligned to the 3D.</p><div class="tool">Gemini · Nano Banana</div></div></li>
         <li><div class="th"><img src="assets/orb_plate.jpg" alt="ORB clean plate"></div><div><div class="n">04</div><h3>Clean plate &amp; mattes</h3><p>People, cars and foliage removed; difference mattes isolate each element for compositing.</p><div class="tool">Gemini edit · Nuke diff matte</div></div></li>
         <li><div class="th"><video muted loop playsinline preload="none" data-auto poster="assets/orb_poster.jpg" src="assets/orb_film.mp4" aria-label="ORB film"></video></div><div><div class="n">05</div><h3>Motion</h3><p>The clay animation is re-rendered with the look-dev still as ingredient — camera and geometry survive untouched.</p><div class="tool">Google Flow · Omni 1.2 Flash</div></div></li>
-        <li><div class="th"><img src="assets/orb_a3.jpg" alt="ORB aerial angle"></div><div><div class="n">06</div><h3>Coverage &amp; finish</h3><p>Extra angles generated in the same look, then graded, upscaled and cut into the reel.</p><div class="tool">Gemini · Topaz · Edit</div></div></li>
+        <li><div class="th"><img src="assets/orb_a3.jpg" alt="ORB aerial angle"></div><div><div class="n">06</div><h3>Coverage &amp; finish</h3><p>Extra angles generated in the same look, then graded, upscaled and cut into the reel.</p><div class="tool">Gemini · Nuke ML Upscale · Edit</div></div></li>
       </ol>
     </div>
   </section>
@@ -384,13 +384,13 @@ function filmPanel(p,k){
       <span class="hint">Drag to compare</span>
       <button class="play" data-play aria-label="Pause">${ICON_PAUSE}</button>
     </div>
-    <div class="cap"><span class="mono">Motion · clay → film</span><span class="mono">Video-to-video · 5 s · 720p</span></div>`;
+    <div class="cap"><span class="mono">Motion · clay → film</span><span class="mono">Video-to-video · 5 s · 1440p</span></div>`;
   if(p.film==='i2v') return `
     <div style="display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:10px">
       <div class="single r916"><video data-auto muted loop playsinline preload="none" poster="assets/${k}_clay.jpg" src="assets/${k}_clayv.mp4"></video><span class="lbl">Clay</span></div>
       <div class="single r916"><video data-auto muted loop playsinline preload="none" poster="assets/${k}_poster.jpg" src="assets/${k}_film.mp4"></video><span class="lbl">Film</span></div>
     </div>
-    <div class="cap"><span class="mono">Motion · look-dev frame → film</span><span class="mono">Image-to-video · 10 s · 720p</span></div>`;
+    <div class="cap"><span class="mono">Motion · look-dev frame → film</span><span class="mono">Image-to-video · 10 s · 1440p</span></div>`;
   return `
     <div class="single ${vr}"><video data-auto muted loop playsinline preload="none" poster="assets/${k}_clay.jpg" src="assets/${k}_clayv.mp4"></video><span class="lbl">Clay animation</span><div class="wip">Omni film — in production</div></div>
     <div class="cap"><span class="mono">Motion · clay previs</span><span class="mono">120 f · 24 fps</span></div>`;
